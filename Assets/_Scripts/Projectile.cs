@@ -49,4 +49,12 @@ public class Projectile : MonoBehaviour{
 
 
     }
+    private void OnDestroy() {
+        PROJECTILES.Remove( this );
+    }
+    static public void DESTROY_PROJECTILES() {
+        foreach ( Projectile p in PROJECTILES) {
+            Destroy( p.gameObject );
+        }
+    }
 }

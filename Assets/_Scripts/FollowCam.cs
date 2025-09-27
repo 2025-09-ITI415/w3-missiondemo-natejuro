@@ -46,4 +46,30 @@ public class FollowCam : MonoBehaviour{
 
         Camera.main.orthographicSize = destination.y + 10;
     }
+    public void SwitchView( eView newView) {
+        if (newView == eView.none ) {
+            newView = nextView;
+        }
+        switch (newView) {
+            case eView.slingshot:
+            POI = null;
+            netView = eView.castle;
+            break;
+            case eView.castle:
+            POI = MissionDemolition.GET_CASTLE();
+            nextView = eView.both;
+            break;
+            case eView.both:
+            POI = viewBothGO;
+            nextView = eView.slingshot;
+            break;
+        }
+    }
+    public void SwitchView() {
+        SwitchView( eView.none );
+    }
+
+    static public void SWITCH_VIEW( eView newView) {
+        S.SwitchView( newView );
+    }
 }
