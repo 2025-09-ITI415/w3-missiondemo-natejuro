@@ -17,6 +17,7 @@ public class ProjectileLine : MonoBehaviour{
         _line.SetPosition( 0, transform.position );
         _projectile = GetComponentInParent<Projectile>();
         ADD_LINE( this );
+
     }
 
     // Update is called once per frame

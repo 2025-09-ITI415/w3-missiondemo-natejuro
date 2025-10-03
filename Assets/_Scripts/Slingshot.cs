@@ -57,7 +57,6 @@ public class Slingshot : MonoBehaviour{
         mouseDelta.Normalize();
         mouseDelta*= maxMagnitude;
     }
-
     Vector3 projPos = launchPos + mouseDelta;
     projectile.transform.position = projPos;
 
@@ -68,18 +67,12 @@ public class Slingshot : MonoBehaviour{
         projRB.isKinematic = false;
         projRB.collisionDetectionMode = CollisionDetectionMode.Continuous;
         projRB.linearVelocity = -mouseDelta * velocityMult;
+        FollowCam.SWITCH_VIEW( FollowCam.eView.slingshot ); 
         FollowCam.POI = projectile;
         Instantiate<GameObject>(projLinePrefab, projectile.transform);
         projectile = null;
+        MissionDemolition.SHOT_FIRED();
     }
-    projRB.collisionDetectionMode = CollisionDetectionMode.Continuous;
-    projRB.velocity = -mouseDelta*velocityMult;
-    FollowCam.SWITCH_VIEW( FollowCam.eView.slingshot ); 
-    FollowCam.POI = projectile;
- }
-   if (InputGetMouseButtonUp(0)) {
-      Instantiate<GameObject>(projLinePrefab,projectile.transform);
-      projectile = null;
-      MissionDemolition.SHOT_FIRED();
- }
+   
+   }
 }

@@ -4,24 +4,35 @@ using UnityEngine;
 
 public class FollowCam : MonoBehaviour{
     static public GameObject POI;
+    static private FollowCam S;
+
+    public enum eView { none, slingshot, castle, both};
 
     [Header("Inscribed")]
     public float easing = 0.05f;
 
     public Vector2 minXY = Vector2.zero;
+    public GameObject viewBothGO;
 
     [Header("Dynamic")]
     public float camZ;
+    public eView nextView = eView.slingshot; 
 
     void Awake(){
         camZ = this. transform.position.z;
     }
 
     void FixedUpdate(){
+        
+        // if (POI == null) return;
+
+        // Vector3 destination = Vector3.zero;
+        // destination.z = camZ;
+        // transform.position = destination;
+    
         Vector3 destination = Vector3.zero;
-
+        
         if(POI!= null){
-
             Rigidbody poiRigid = POI.GetComponent<Rigidbody>();
             if ((poiRigid != null) && poiRigid.IsSleeping()){
                 POI = null;
@@ -31,10 +42,7 @@ public class FollowCam : MonoBehaviour{
         if(POI != null){
             destination = POI.transform.position;
         }
-    //    if(POI == null) return;
 
-    //    Vector3 destination = POI.transform.position;
-    
         destination.x = Mathf.Max(minXY.x, destination.x);
         destination.y = Mathf.Max(minXY.y, destination.y);
 
@@ -46,20 +54,21 @@ public class FollowCam : MonoBehaviour{
 
         Camera.main.orthographicSize = destination.y + 10;
     }
+    
     public void SwitchView( eView newView) {
-        if (newView == eView.none ) {
+        if ( newView == eView.none ) {
             newView = nextView;
         }
-        switch (newView) {
-            case eView.slingshot:
+        switch ( newView ) {
+        case eView.slingshot:
             POI = null;
-            netView = eView.castle;
+            nextView = eView.castle;
             break;
-            case eView.castle:
+        case eView.castle:
             POI = MissionDemolition.GET_CASTLE();
             nextView = eView.both;
             break;
-            case eView.both:
+        case eView.both:
             POI = viewBothGO;
             nextView = eView.slingshot;
             break;
